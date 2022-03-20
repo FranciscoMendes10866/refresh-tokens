@@ -1,0 +1,4 @@
+api/node_modules/
+api/db/dev.db
+api/pnpm-lock.yaml
+api/.env
