@@ -2,15 +2,15 @@ import { User, RefreshTokens } from "../db/models/index.js";
 import { verifyPassword, signToken } from "../utils/index.js";
 
 export const login = async (req, res) => {
+  const { username, password } = req.body;
+
+  if (!username || !password) {
+    return res.status(400).json({
+      error: "Username and password are required.",
+    });
+  }
+
   try {
-    const { username, password } = req.body;
-
-    if (!username || !password) {
-      return res.status(400).json({
-        error: "Username and password are required.",
-      });
-    }
-
     const foundUser = await User.findOne({
       where: {
         username,

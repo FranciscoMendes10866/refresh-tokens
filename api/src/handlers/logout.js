@@ -1,17 +1,17 @@
 import { RefreshTokens } from "../db/models/index.js";
 
 export const logout = async (req, res) => {
+  const { authorization } = req.headers;
+
+  if (!authorization) {
+    return res.status(401).json({
+      error: "You must be logged in to logout.",
+    });
+  }
+
+  const token = authorization.replace("Bearer", "").trim();
+
   try {
-    const { authorization } = req.headers;
-
-    if (!authorization) {
-      return res.status(401).json({
-        error: "You must be logged in to logout.",
-      });
-    }
-
-    const token = authorization.replace("Bearer", "").trim();
-
     const foundRefreshToken = await RefreshTokens.findOne({
       where: {
         token,

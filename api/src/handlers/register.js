@@ -2,15 +2,15 @@ import { User } from "../db/models/index.js";
 import { hashPassword } from "../utils/index.js";
 
 export const register = async (req, res) => {
+  const { username, password } = req.body;
+
+  if (!username || !password) {
+    return res.status(400).json({
+      error: "Username and password are required.",
+    });
+  }
+
   try {
-    const { username, password } = req.body;
-
-    if (!username || !password) {
-      return res.status(400).json({
-        error: "Username and password are required.",
-      });
-    }
-
     const foundUser = await User.findOne({
       where: {
         username,
