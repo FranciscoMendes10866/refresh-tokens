@@ -1,4 +1,10 @@
+# api folder
 api/node_modules/
 api/db/dev.db
 api/pnpm-lock.yaml
 api/.env
+
+# client folder
+client/node_modules/
+client/pnpm-lock.yaml
+client/.env
