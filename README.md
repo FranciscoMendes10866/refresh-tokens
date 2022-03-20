@@ -1,2 +1,2 @@
 #  refresh-tokens
-Refresh Tokens - Frontend and Backend 🔒
+Refresh Tokens flow - Frontend and Backend 🔒
