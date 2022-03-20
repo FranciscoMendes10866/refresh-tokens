@@ -1,7 +1,11 @@
 import { useState, useCallback } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { mutate } from "swr";
+
+import { registerFn } from "../api";
 
 function register() {
+  const navigate = useNavigate();
   const [state, setState] = useState({
     username: "",
     password: "",
@@ -19,8 +23,14 @@ function register() {
   );
 
   const handleOnSubmit = useCallback(
-    (e) => {
+    async (e) => {
       e.preventDefault();
+      const result = await mutate(
+        "/api/register",
+        registerFn(state.username, state.password)
+      );
+
+      if (result.status === 201) navigate("/");
     },
     [state]
   );

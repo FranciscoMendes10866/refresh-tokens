@@ -12,6 +12,7 @@ function App() {
     <SWRConfig
       value={{
         onError: (err) => {
+          console.log("[Global Error]");
           console.error(err);
         },
       }}

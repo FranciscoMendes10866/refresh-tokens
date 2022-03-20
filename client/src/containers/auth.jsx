@@ -2,12 +2,12 @@ import { useLocation, Navigate, Outlet } from "react-router-dom";
 import { useStoreState } from "easy-peasy";
 
 function AuthContainer() {
-  const hasSession = !!useStoreState((state) => state.session);
+  const isLoggedIn = useStoreState((state) => state.isLoggedIn);
   const location = useLocation();
 
   return (
     <>
-      {hasSession ? (
+      {isLoggedIn ? (
         <Outlet />
       ) : (
         <Navigate to="/" state={{ from: location }} replace />

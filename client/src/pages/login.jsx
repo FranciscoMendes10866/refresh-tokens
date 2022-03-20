@@ -1,11 +1,17 @@
 import { useState, useCallback } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { mutate } from "swr";
+import { useStoreActions } from "easy-peasy";
+
+import { loginFn } from "../api";
 
 function login() {
+  const navigate = useNavigate();
   const [state, setState] = useState({
     username: "",
     password: "",
   });
+  const setSession = useStoreActions((actions) => actions.setSession);
 
   const handleOnChange = useCallback(
     (e) => {
@@ -19,8 +25,17 @@ function login() {
   );
 
   const handleOnSubmit = useCallback(
-    (e) => {
+    async (e) => {
       e.preventDefault();
+      const result = await mutate(
+        "/api/login",
+        loginFn(state.username, state.password)
+      );
+
+      if (result.status === 200) {
+        setSession(result.data.session);
+        navigate("/dashboard");
+      }
     },
     [state]
   );

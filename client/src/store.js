@@ -1,4 +1,4 @@
-import { action, createStore } from "easy-peasy";
+import { action, createStore, computed } from "easy-peasy";
 
 export const store = createStore({
   // state
@@ -7,4 +7,6 @@ export const store = createStore({
   setSession: action((state, data) => {
     state.session = data;
   }),
+  // computed
+  isLoggedIn: computed((state) => state.session !== null),
 });
