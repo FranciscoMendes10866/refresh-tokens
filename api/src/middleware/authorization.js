@@ -19,17 +19,18 @@ export const authorization = (req, res, next) => {
 
   const token = authorization.replace("Bearer ", "").trim();
 
+  let decodedToken;
+
   try {
     const tokenData = verifyToken(token);
-
-    delete tokenData.exp;
-
-    req.user = tokenData.dataValues;
-
-    return next();
+    decodedToken = tokenData.user;
   } catch (err) {
     return res.status(403).json({
       error: err.message,
     });
   }
+
+  req.user = decodedToken;
+
+  return next();
 };

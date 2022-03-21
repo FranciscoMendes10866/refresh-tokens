@@ -1,6 +1,5 @@
 import { useState, useCallback } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { mutate } from "swr";
 import { useStoreActions } from "easy-peasy";
 
 import { loginFn } from "../api";
@@ -27,10 +26,7 @@ function login() {
   const handleOnSubmit = useCallback(
     async (e) => {
       e.preventDefault();
-      const result = await mutate(
-        "/api/login",
-        loginFn(state.username, state.password)
-      );
+      const result = await loginFn(state.username, state.password);
 
       if (result.status === 200) {
         setSession(result.data.session);

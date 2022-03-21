@@ -9,4 +9,5 @@ export const store = createStore({
   }),
   // computed
   isLoggedIn: computed((state) => state.session !== null),
+  currentSession: computed((state) => state.session),
 });

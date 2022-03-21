@@ -32,11 +32,11 @@ export const login = async (req, res) => {
     }
 
     const accessToken = signToken(
-      { ...foundUser },
+      { user: foundUser },
       process.env.ACCESS_TOKEN_EXP
     );
     const refreshToken = signToken(
-      { ...foundUser },
+      { user: foundUser },
       process.env.REFRESH_TOKEN_EXP
     );
 

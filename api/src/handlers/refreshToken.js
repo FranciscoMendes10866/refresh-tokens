@@ -26,54 +26,56 @@ export const refreshToken = async (req, res) => {
     },
   });
 
+  let decodedFoundRefreshToken;
+
   if (!foundRefreshToken) {
     try {
       const tokenData = verifyToken(token);
+      decodedFoundRefreshToken = tokenData.user;
 
       await RefreshTokens.destroy({
         where: {
-          userId: tokenData.dataValues.id,
+          userId: decodedFoundRefreshToken.id,
         },
       });
-
-      return res.status(403).json({
-        error: "Invalid refresh token.",
-      });
     } catch (err) {
-      return res.sendStatus(403);
+      return res.status(403).json({
+        error: "Invalid token.",
+      });
     }
   }
 
+  let decodedToken;
+
   try {
     await foundRefreshToken.destroy();
-
     const tokenData = verifyToken(token);
-
-    delete tokenData.exp;
-
-    const accessToken = signToken(
-      { ...tokenData.dataValues },
-      process.env.ACCESS_TOKEN_EXP
-    );
-    const refreshToken = signToken(
-      { ...tokenData.dataValues },
-      process.env.REFRESH_TOKEN_EXP
-    );
-
-    await RefreshTokens.create({
-      token: refreshToken,
-      userId: tokenData.dataValues.id,
-    });
-
-    return res.json({
-      session: {
-        accessToken,
-        refreshToken,
-      },
-    });
+    decodedToken = tokenData.user;
   } catch (err) {
     return res.status(500).json({
       error: err.message,
     });
   }
+
+  const accessToken = signToken(
+    { user: decodedToken },
+    process.env.ACCESS_TOKEN_EXP
+  );
+
+  const refreshToken = signToken(
+    { user: decodedToken },
+    process.env.REFRESH_TOKEN_EXP
+  );
+
+  await RefreshTokens.create({
+    token: refreshToken,
+    userId: decodedToken.id,
+  });
+
+  return res.json({
+    session: {
+      accessToken,
+      refreshToken,
+    },
+  });
 };
