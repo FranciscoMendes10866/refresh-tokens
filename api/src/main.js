@@ -21,7 +21,7 @@ const startServer = async () => {
   app.post("/api/register", register);
   app.post("/api/login", login);
   app.post("/api/logout", authorization, logout);
-  app.post("/api/refreshToken", authorization, refreshToken);
+  app.post("/api/refreshToken", refreshToken);
 
   // Protected routes
   app.get("/api/dummy", authorization, (req, res) => {

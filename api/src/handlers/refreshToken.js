@@ -10,6 +10,14 @@ export const refreshToken = async (req, res) => {
     });
   }
 
+  const isValid = authorization.startsWith("Bearer ");
+
+  if (!isValid) {
+    return res.status(401).json({
+      error: "Invalid authorization header.",
+    });
+  }
+
   const token = authorization.replace("Bearer", "").trim();
 
   const foundRefreshToken = await RefreshTokens.findOne({
