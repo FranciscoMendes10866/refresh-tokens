@@ -24,13 +24,10 @@ function dashboard() {
   const handleOnLogout = useCallback(
     async (e) => {
       e.preventDefault();
-      const result = await logoutFn(session.refreshToken);
-
-      if (result.status === 204) {
-        setShouldFetch((state) => !state);
-        setSession(null);
-        navigate("/");
-      }
+      await logoutFn(session.refreshToken);
+      setShouldFetch((state) => !state);
+      setSession(null);
+      navigate("/");
     },
     [session]
   );
